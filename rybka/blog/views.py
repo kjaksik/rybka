@@ -1,23 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Post
 # Create your views here.
 
-posts = [
-    {
-        'author':'Maciek',
-        'title': 'Zjaralem sie',
-        'content':'A takze zesralem',
-        'date':'420'
-    },
-       {
-        'author':'Maciek',
-        'title': 'Dale jestyem zjarany',
-        'content':'Pomocy',
-        'date':'42069'
-    },
-]
 
 def home(request):
+    posts = Post.objects.all().order_by('date_posted').reverse()
     context = {
         'posts':posts,
         'title':'Rybka'
