@@ -35,22 +35,23 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-                {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'rybka-create' %}">Dodaj rybę</a>
-                <a class="nav-item nav-link" href="{% url 'profile' %}">{{ user }}</a>
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Wylogowanie</a>
-                {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Logowanie</a>
-                <a class="nav-item nav-link" href="{% url 'register' %}">Rejestacja</a>
-                {% endif %}
-            </div>
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'rybka-create' %}">Dodaj rybę</a>
+            <a class="nav-item nav-link" href="{% url 'profile' %}">{{ user }}</a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Wylogowanie</a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Logowanie</a>
+            <a class="nav-item nav-link" href="{% url 'register' %}">Rejestacja</a>
+            {% endif %}
+          </div>
         </div>
         </div>
     </nav>
     </header>
     
     <main role="main" class="container">
-        <div class="content-section">
+        <div class="row">
+          <div class="col-md-8">
             {% if messages %}
             {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">
@@ -58,8 +59,46 @@
             </div>
             {% endfor %}
             {% endif %}
-           <h1> {{ user.username }}</h1>
-           <h2> {{ user.email }}</h2>
+            <h1>Rybka</h1>
+            <h2>Pochwal sie swoją rybą</h2>
+            <article class="media content-section">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ object.author }}</a>
+                    <small class="text-muted">{{ object.date_posted }}</small>
+                    {% if object.author == user %}
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'rybka-delete' object.id %}">Usuń rybę</a>
+                    {% endif %}
+                  </div>
+                  <h2 class="article-title">{{ object.title }}</h2>
+                  <p class="article-content">{{ object.content }}</p>
+                </div>
+              </article>
+              {% for comment in object.comment_set.all %}
+              <article class="media content-section">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ comment.author }}</a>
+                    <small class="text-muted">{{ comment.date_posted }}</small>
+                  </div>
+                  <p class="article-content">{{ comment.content }}</p>
+                </div>
+              </article>
+              {% endfor %}
+            </div>
+          <div class="col-md-4">
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <li class="list-group-item list-group-item-light">Latest Posts</li>
+                  <li class="list-group-item list-group-item-light">Announcements</li>
+                  <li class="list-group-item list-group-item-light">Calendars</li>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+          </div>
         </div>
       </main>
 

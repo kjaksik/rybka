@@ -36,6 +36,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
             {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'rybka-create' %}">Dodaj rybę</a>
             <a class="nav-item nav-link" href="{% url 'profile' %}">{{ user }}</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Wylogowanie</a>
             {% else %}
@@ -67,7 +68,7 @@
                     <a class="mr-2" href="#">{{ post.author }}</a>
                     <small class="text-muted">{{ post.date_posted }}</small>
                   </div>
-                  <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                  <h2><a class="article-title" href="{% url 'rybka-detail' post.id %}">{{ post.title }}</a></h2>
                   <p class="article-content">{{ post.content }}</p>
                 </div>
               </article>

@@ -58,8 +58,16 @@
             </div>
             {% endfor %}
             {% endif %}
-           <h1> {{ user.username }}</h1>
-           <h2> {{ user.email }}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Nowa ryba</legend>
+                    {{ form.as_p }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Dodaj rybę</button>
+                </div>
+            </form>
         </div>
       </main>
 
