@@ -1,9 +1,10 @@
+from django.forms import forms
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post
-
+from .models import Post, Comment
+from .forms import CommentForm
 
 
 def home(request):
@@ -24,9 +25,26 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
 
+def postDetails(request,pk):
+   if request.method == 'POST':
+       form = CommentForm(request.POST)
+       if form.is_valid():
+           content =  form.cleaned_data['content']
+           comment = Comment(content=content,author=request.user,post_id=pk)
+           comment.save()
+   else:
+       form = CommentForm()
+
+   post = Post.objects.get(id=pk)
+   context = {
+       'object':post,
+       'title':'Rybka',
+       'form': form
+   }
+   return render(request, 'blog/post_detail.html',context)
 
 class PostCreateView(LoginRequiredMixin,CreateView):
-    fields = ['title', 'content']
+    fields = ['title', 'content','image']
     model = Post
 
     def form_valid(self, form):
